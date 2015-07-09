@@ -1,5 +1,13 @@
 # WebApp Starter Kit
 
+## Features
+
+* This is built by me, for me. It might suit your requirements if you change it.
+* No bells and whistles, and can be adapted to your workflow.
+* Currently there's no production-ready build system. Everything happens in `src` and that folder is synced to the web root of the server.
+* Dead simple and basic deployment using fabric. Deployment right now is just copying the folder using rsync, but you can make deployment more complex.
+* An ansible playbook to provision a brand new ubuntu server ready to host this. No need to ever ssh and configure the server by hand.
+
 ## Development
 
 ### Initial setup
