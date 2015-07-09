@@ -1,0 +1,21 @@
+{
+  "name": "webapp",
+  "version": "0.0.0",
+  "homepage": "https://github.com/skyronic/start",
+  "authors": [
+    "Anirudh Sanjeev <skyronic@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "nvd3": "~1.8.1",
+    "bootstrap": "~3.3.5"
+  }
+}
