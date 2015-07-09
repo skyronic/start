@@ -1,0 +1,67 @@
+---
+- hosts: private
+  gather_facts: no
+  vars:
+    project_id: webapp
+    project_remote_root: /home/anirudh/webapp # Path that your project will be on
+    logs_root: /home/anirudh/logs/webapp
+    project_hostname: webapp.private.skyronic.com
+
+  tasks:
+    - name: Create app folder
+      file: path={{ project_remote_root }} state=directory
+    - name: Create logs folder
+      file: path={{ logs_root }} state=directory
+    - name: Install packages
+      sudo: yes
+      apt: pkg={{ item }} state=installed update_cache=true
+      with_items:
+        - nginx
+        - git
+        - mcrypt
+        - php5-cli
+        - php5-curl
+        - php5-fpm
+        - php5-intl
+        - php5-json
+        - php5-mcrypt
+        - php5-sqlite
+        - mysql-server
+        - mysql-client
+        - php5-mysql
+        - php5-curl
+        - php-db
+        - python-mysqldb
+      notify:
+        - restart nginx
+        - restart mysql
+
+    - name: ensure php5-fpm cgi.fix_pathinfo=0
+      sudo: true
+      lineinfile: dest=/etc/php5/fpm/php.ini regexp='^(.*)cgi.fix_pathinfo=' line=cgi.fix_pathinfo=0
+      notify:
+        - restart php5-fpm
+        - restart nginx
+
+    - name: enable php5 mcrypt module
+      sudo: true
+      shell: php5enmod mcrypt
+      args:
+        creates: /etc/php5/cli/conf.d/20-mcrypt.ini
+
+    - name: Configure nginx
+      sudo: true
+      template: src=nginx-basic.conf dest=/etc/nginx/sites-enabled/site_{{ project_id }}
+      notify:
+        - restart php5-fpm
+        - restart nginx
+  handlers:
+    - name: restart nginx
+      sudo: true
+      service: name=nginx state=reloaded
+    - name: restart mysql
+      sudo: true
+      service: name=mysql state=reloaded
+    - name: restart php5-fpm
+      sudo: true
+      shell: service php5-fpm restart

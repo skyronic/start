@@ -23,6 +23,14 @@ I personally use `php -S 0.0.0.0:8080` or something like that to start a static 
 
 When you update the asset list, or do a `bower install`
 
+## Provisioning
+
+I use a setup to map `some-id.private.skyronic.com` to the project, which usually is a php application, but since it's an nginx you can use it to deploy static sites. Edit files in `ansible/`. For me, I just run
+
+```
+ansible-playbook -i hosts provision.yml
+```
+
 ## Deployment
 
 This opts for a simple rsync deploy, powered by fabric, and the rsync helper module of fabric.
